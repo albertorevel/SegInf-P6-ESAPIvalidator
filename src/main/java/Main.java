@@ -12,6 +12,7 @@ public class Main {
     private static boolean encodeURL = false;
     private static boolean encodeHTML = false;
     private static boolean encodeSQL = false;
+    private static boolean validated = false;
     private final static String context = "SIp6";
     private static Encoder encoder = ESAPI.encoder();
     private static Validator validator = ESAPI.validator();
@@ -54,7 +55,7 @@ public class Main {
         MySQLCodec codec = new MySQLCodec(MySQLCodec.Mode.STANDARD);
 
         for (int i = 0; i < 8; i++) {
-            entrada = scanner.next();
+            entrada = scanner.nextLine();
 
             if (canonize) {
                 entrada = encoder.canonicalize(entrada);
@@ -63,13 +64,36 @@ public class Main {
             notEncoded[i] = entrada;
 
             if (validate) {
-                Boolean b1 = validator.isValidInput(context,entrada,"Nombre1",50,false);
-                Boolean b2 = validator.isValidInput(context,entrada,"Nombre2",50,false);
-                Boolean b3 = validator.isValidInput(context,"atb.tiko@gmail.com","Email",50,false);
-
-                System.out.println("Primero: "+b1+". Segundo: "+b2);
-                System.out.println("Email: "+b3);
-                //TODO salir si no valido
+                switch (i) {
+                    case 0 :
+                        validated = validator.isValidInput(context,entrada,"CCName",50,false);
+                        break;
+                    case 1 :
+                        validated = validator.isValidInput(context,entrada,"CCAddress",50,false);
+                        break;
+                    case 2 :
+                        validated = validator.isValidInput(context,entrada,"CCType",4,false);
+                        break;
+                    case 3 :
+                        validated = validator.isValidInput(context,entrada,"CCNumber",16,false);
+                        break;
+                    case 4 :
+                        validated = validator.isValidInput(context,entrada,"CCExpMonth",2,false);
+                        break;
+                    case 5 :
+                        validated = validator.isValidInput(context,entrada,"CCExpYear",4,false);
+                        break;
+                    case 6 :
+                        validated = validator.isValidInput(context,entrada,"CCCVN",3,false);
+                        break;
+                    default :
+                        validated = validator.isValidInput(context,entrada,"CCDNI",9,false);
+                        break;
+                }
+                System.out.println(validated);
+                if(!validated) {
+                    break;
+                }
             }
 
             if (encodeSQL) {
@@ -88,8 +112,10 @@ public class Main {
 
 
         }
-
-        if(!(encodeHTML || encodeSQL || encodeURL)) {
+        if(!validated) {
+            System.out.println("Your entry is not valid!");
+        }
+        else if(!(encodeHTML || encodeSQL || encodeURL)) {
             printArray("plain",notEncoded);
         } else {
             if(encodeHTML) {
