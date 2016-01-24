@@ -65,8 +65,10 @@ public class Main {
             if (validate) {
                 Boolean b1 = validator.isValidInput(context,entrada,"Nombre1",50,false);
                 Boolean b2 = validator.isValidInput(context,entrada,"Nombre2",50,false);
+                Boolean b3 = validator.isValidInput(context,"atb.tiko@gmail.com","Email",50,false);
 
                 System.out.println("Primero: "+b1+". Segundo: "+b2);
+                System.out.println("Email: "+b3);
                 //TODO salir si no valido
             }
 
