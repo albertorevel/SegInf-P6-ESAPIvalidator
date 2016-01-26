@@ -64,6 +64,7 @@ public class Main {
             notEncoded[i] = entrada;
 
             if (validate) {
+
                 switch (i) {
                     case 0 :
                         validated = validator.isValidInput(context,entrada,"CCName",50,false);
@@ -112,7 +113,7 @@ public class Main {
 
 
         }
-        if(!validated) {
+        if(validate && !validated) {
             System.out.println("Your entry is not valid!");
         }
         else if(!(encodeHTML || encodeSQL || encodeURL)) {
