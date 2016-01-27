@@ -6,6 +6,9 @@ import org.owasp.esapi.errors.EncodingException;
 
 import java.util.Scanner;
 
+/**
+ * Main class that read an analyzes the Strings provided to the program.
+ */
 public class Main {
     private static boolean validate = false;
     private static boolean canonize = false;
@@ -17,7 +20,11 @@ public class Main {
     private static Encoder encoder = ESAPI.encoder();
     private static Validator validator = ESAPI.validator();
 
-
+    /**
+     * Main method. It reads Strings and do the actions requested.
+     * @param args it contains if the program has to encode, validate and/or
+     *             canonize the Strigns passed to the program.
+     */
     public static void main (String[] args) {
 
         for (int i = 0; i < args.length; i++) {
@@ -54,7 +61,9 @@ public class Main {
 
         MySQLCodec codec = new MySQLCodec(MySQLCodec.Mode.STANDARD);
 
-        for (int i = 0; i < 8; i++) {
+        int i = 0;
+
+        while (i < 8) {
             entrada = scanner.nextLine();
 
             if (canonize) {
@@ -91,6 +100,7 @@ public class Main {
                         validated = validator.isValidInput(context,entrada,"CCDNI",9,false);
                         break;
                 }
+                i++;
                 System.out.println(validated);
                 if(!validated) {
                     break;
@@ -111,6 +121,9 @@ public class Main {
                 encodedHTML[i] = encoder.encodeForHTML(entrada);
             }
 
+            if(!validated) {
+                System.out.println(entrada);
+            }
 
         }
         if(validate && !validated) {
@@ -129,7 +142,6 @@ public class Main {
                 printArray("URL",encodedURL);
             }
         }
-
     }
 
     /**
